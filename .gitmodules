@@ -1,0 +1,9 @@
+[submodule "lib/relativity.scad"]
+	path = lib/relativity.scad
+	url = https://github.com/davidson16807/relativity.scad
+[submodule "lib/BOSL2"]
+	path = lib/BOSL2
+	url = https://github.com/BelfrySCAD/BOSL2
+[submodule "lib/Round-Anything"]
+	path = lib/Round-Anything
+	url = https://github.com/Irev-Dev/Round-Anything
