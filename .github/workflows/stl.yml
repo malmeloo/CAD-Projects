@@ -14,16 +14,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout main branch
+      - name: Checkout main branch (with submodules)
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           submodules: recursive
 
-      - name: Install OpenSCAD
+      - name: Install OpenSCAD (nightly via snap)
         run: |
-          sudo apt-get update
-          sudo apt-get install -y openscad
+          sudo snap install openscad-nightly
 
       - name: Generate STL files
         run: |
@@ -33,7 +32,9 @@ jobs:
             if [ -f "${dir}main.scad" ]; then
               project=$(basename "$dir")
               echo "Generating STL for $project"
-              openscad --export-format binstl -o "out/${project}.stl" "${dir}main.scad"
+              openscad-nightly.openscad \
+                -o "out/${project}.stl" \
+                "${dir}main.scad"
             fi
           done
 
