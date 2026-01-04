@@ -2,16 +2,16 @@ include <../lib/relativity.scad/relativity.scad>
 
 $fn = 256;
 
-base_size = [40, 20, 7];
+base_size = [40, 20, 5];
 corner_radius = 2;
 
 screw_head_height = 3;
 screw_head_diam = 5.7;
-screw_body_diam = 3.125;
+screw_body_diam = 3.2;
 
 thermistor_diam = 6;
-thermistor_split_size = 3;
-thermistor_holder_height = 4;
+thermistor_split_size = 2;
+thermistor_holder_height = 2;
 thermistor_holder_thickness = 2;
 
 module screw_hole(head_height, head_diam, body_height, body_diam) {
@@ -26,9 +26,9 @@ module thermistor_holder(hole_diam, split_width, holder_width, holder_height, ho
       translate([0, 0, holder_height + hole_diam / 2]) rotate([0, 90, 0]) cylinder(holder_thickness, r=holder_width / 2);
     }
 
-    translate([0, 0, holder_height + hole_diam / 2]) rotate([0, 90, 0]) cylinder(holder_thickness, r=hole_diam);
+    translate([0, 0, holder_height + hole_diam / 2]) rotate([0, 90, 0]) cylinder(holder_thickness, r=hole_diam / 2);
 
-    translate([0, -split_width / 2, holder_height + hole_diam]) cube([holder_thickness, split_width, hole_diam]);
+    translate([0, -split_width / 2, holder_height + hole_diam / 2]) cube([holder_thickness, split_width, holder_width]);
   }
 }
 
@@ -38,8 +38,8 @@ module base(size = [1, 1, 1], radius = 0.5) {
   assert(size.z >= radius * 2);
 
   hull() {
-    for (x = [(size.x - radius) / 2, -(size.x - radius) / 2])
-      for (y = [(size.y - radius) / 2, -(size.y - radius) / 2]) {
+    for (x = [size.x / 2 - radius, -size.x / 2 + radius])
+      for (y = [size.y / 2 - radius, -size.y / 2 + radius]) {
         translate([x, y, 0]) cylinder(h=size.z - radius, r=radius);
         translate([x, y, size.z - radius]) sphere(r=radius);;
       }
@@ -52,12 +52,12 @@ module main() {
     screw_hole(screw_head_height, screw_head_diam, base_size.z - screw_head_height, screw_body_diam);
   }
 
-  for (x = [-(base_size.x / 2 - corner_radius), (base_size.x / 2 - corner_radius)])
+  for (x = [-base_size.x / 2 - thermistor_holder_thickness / 2 + corner_radius * 2, base_size.x / 2 + thermistor_holder_thickness / 2 - corner_radius * 2])
     translate([x - thermistor_holder_thickness / 2, 0, base_size.z])
       thermistor_holder(
         thermistor_diam,
         thermistor_split_size,
-        base_size.y - corner_radius,
+        thermistor_diam + thermistor_holder_thickness * 2,
         thermistor_holder_height,
         thermistor_holder_thickness,
       );
