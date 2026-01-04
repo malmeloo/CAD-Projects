@@ -1,4 +1,4 @@
-name: Generate STL files
+name: Generate STL / PNG files
 
 on:
   push:
@@ -33,12 +33,13 @@ jobs:
               project=$(basename "$dir")
               echo "Generating STL for $project"
               openscad-nightly -o "out/${project}.stl" "${dir}main.scad"
+              openscad-nightly --render -o "out/${project}.png" "${dir}main.scad"
             fi
           done
 
-      - name: Publish fresh STL branch
+      - name: Publish fresh assets branch
         env:
-          TARGET_BRANCH: generated-stl
+          TARGET_BRANCH: generated
         run: |
           cd out
 
