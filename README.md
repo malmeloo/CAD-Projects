@@ -5,6 +5,7 @@ Collection of CAD projects I've made.
 ## Overview
 
 - [thermistor-mount](thermistor-mount/)
+- [fysetc-display-mount](fysetc-display-mount/)
 
 ## License
 
